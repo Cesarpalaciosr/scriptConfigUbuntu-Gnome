@@ -1,25 +1,17 @@
 #!/bin/bash
+
 #Actualizaion de repositorios
-
-
 #Variables (comandos que se repetiran a lo largo del script)
 update="sudo apt-get update"
 upgrade="sudo apt-get upgrade -y"
 fullCommandUpdate="$update; $upgrade"
-patron="plugins"
+patron="plugins="
 
-#instalar git 
-sudo apt-get install -y git
-
-#terminal tilix
-sudo apt-get install -y tilix
-
-#neofetch
-sudo apt-get install -y neofetch
+#instalar herramientas
+sudo apt-get install -y git tilix neofetch htop flatpak gnupg curl wget gpg
 
 
 #Agregando repositorios
-sudo apt-get install -y flatpak
 #sudo add-apt-repository ppa:flatpak/stable
 #sudo apt update
 #sudo apt-get install -y flatpak
@@ -34,18 +26,13 @@ flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.f
 
 #volver a cargar la terminal
 bash
-sudo flatpak remote-add elementary https://flatpak.elementary.io/repo.flatpakrepo
+sudo flatpak remote-add --if-not-exists elementary https://flatpak.elementary.io/repo.flatpakrepo
 
 sudo flatpak remote-modify elementary --prio 2
 
 
-
-
 #Agregar repositorios de mongodb
 #comandos oficiales de la pagina de mongodb para ubuntu 22.04 jammy Jellyfish
-
-sudo apt-get install -y gnupg curl
-
 
 curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc | \
    sudo gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg \
@@ -53,12 +40,9 @@ curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc | \
    
 echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list   
 
-
-
 #cambiar a variable
 #sudo apt-get update
 $update
-
 
 #instalacion de mongo
 sudo apt-get install -y mongodb-org
@@ -103,23 +87,46 @@ sudo apt-get update
 
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-
-
+#Instala oh my bash pero no configura ningun plugin
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
 
 #instalar zsh
 $update 
 sudo apt install -y zsh
 
-2
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-# sudo curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+
+
 
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:=~/.oh-my-zsh/custom}/plugins/zsh-completions
 
 bash
+#La variable esta declarada a esta altura porque al principio de la ejecucion este archivo todavia no existe
 archivo="~/.zshrc"
 
 # Reemplazar la línea que contiene el patrón
 sed -i "/$patron/c plugins=(git zsh-autosuggestions zsh-syntax-highlighting zsh-completions)" "$archivo"
+
+source ~/.zshrc
+
+#extensiones y herramientas
+#Ulauncher
+sudo add-apt-repository universe -y 
+sudo add-apt-repository ppa:agornostal/ulauncher -y 
+sudo apt update 
+sudo apt install -y ulauncher
+
+#cambiar la termial
+echo $'||||||||| \n \n \e[31;1mEscoger la terminal por defecto (Recomendado tilix)\e[0m \n \n |||||||||| \n ';
+sudo update-alternatives --config x-terminal-emulator
+
+#Configurando shell por defecto a zsh
+chsh -s /bin/zsh
+
+
+
+#fondo de pantalla
+curl --output waves.png https://images8.alphacoders.com/134/1346083.png
