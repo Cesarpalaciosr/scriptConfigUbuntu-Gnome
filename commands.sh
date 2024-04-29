@@ -165,3 +165,13 @@ gsettings set org.gnome.desktop.interface icon-theme "Sweet-Purple-Filled"
 # link de iconos
 curl -Lfs https://www.gnome-look.org/p/1284047/loadFiles | jq -r '.files | first.version as $v | .[] | select(.version == $v).url' | perl -pe 's/\%(\w\w)/chr hex $1/ge' | xargs wget
 
+
+
+
+
+
+
+
+##add java to path 
+export JAVA_HOME="/usr/lib/jvm/jdk-22-oracle-x64"
+export PATH=$PATH:$JAVA_HOME/bin
