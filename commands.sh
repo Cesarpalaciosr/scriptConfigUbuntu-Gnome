@@ -31,6 +31,11 @@ sudo flatpak remote-add --if-not-exists elementary https://flatpak.elementary.io
 sudo flatpak remote-modify elementary --prio 2
 
 
+
+#Instalar postgres
+sudo apt install -y postgresql
+
+
 #Agregar repositorios de mongodb
 #comandos oficiales de la pagina de mongodb para ubuntu 22.04 jammy Jellyfish
 
@@ -127,6 +132,36 @@ sudo update-alternatives --config x-terminal-emulator
 chsh -s /bin/zsh
 
 
+#Configuracion del escritorio
+sudo apt install -y gnome-tweaks                                      
+
+#Descargar los temas Sweet
+curl -Lfs https://www.gnome-look.org/p/1253385/loadFiles | jq -r '.files | first.version as $v | .[] | select(.version == $v).url' | perl -pe 's/\%(\w\w)/chr hex $1/ge' | xargs wget
+
+
+
+#Actviar la extencion user-themes
+gnome-extensions enable user-theme@gnome-shell-extensions.gcampax.github.com
+#Extraer los temas de Sweet
+cat *.tar.xz | sudo tar -xvJf - -i -C /usr/share/themes 
+
+#Establecer el tema
+gsettings set org.gnome.shell.extensions.user-theme name "Sweet-Ambar-Blue-Dark-v40"
+gsettings set org.gnome.desktop.interface gtk-theme "Sweet-Ambar-Blue-V40"
+gsettings set org.gnome.desktop.wm.preferences theme "Sweet-Ambar-Blue-V40"
 
 #fondo de pantalla
 curl --output waves.png https://images8.alphacoders.com/134/1346083.png
+
+# Estableciendo los iconos
+cat *.tar.xz | sudo tar -xvJf - -i -C /usr/share/icons
+gsettings set org.gnome.desktop.interface icon-theme "Sweet-Purple-Filled"
+
+
+
+
+
+
+# link de iconos
+curl -Lfs https://www.gnome-look.org/p/1284047/loadFiles | jq -r '.files | first.version as $v | .[] | select(.version == $v).url' | perl -pe 's/\%(\w\w)/chr hex $1/ge' | xargs wget
+
